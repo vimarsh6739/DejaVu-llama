@@ -153,7 +153,7 @@ if __name__ == '__main__':
     ]
 
     model = LLaMA.build(
-        checkpoints_dir='llama-2-7b/',
+        checkpoints_dir='/shared/vsathia2/llama/7B/',
         tokenizer_path='tokenizer.model',
         load_model=True,
         max_seq_len=1024,
