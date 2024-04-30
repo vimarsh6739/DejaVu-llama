@@ -51,6 +51,8 @@ class BasicDataset(Dataset):
         else:
             x = torch.Tensor(self.X[-idx])
             y = torch.Tensor(self.Y[-idx])
+        print(x[:100])
+        print(y[:100])
         if y.sum()== 0:
             print("all zero y")
             exit()
@@ -90,7 +92,7 @@ def create_dataset(query, labels, args):
 def main():
     parser = argparse.ArgumentParser(description="PyTorch OPT Full Model")
     parser.add_argument("--model", type=str, default="vanilla_llama", choices = MODEL_CHOICES)
-    parser.add_argument("--dataset", type=str, default="c4", choices = DATA_CHOICES)
+    parser.add_argument("--dataset", type=str, default="wikitext", choices = DATA_CHOICES)
     parser.add_argument(
         "--L",
         type=int,

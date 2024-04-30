@@ -26,7 +26,7 @@ def actv_hook(module, inputs, outputs):
         b,e = fstarts[lid], min(fstarts[lid]+_outputs.size(0),factv_ptrs[lid].shape[0])
 
         #copy outputs to file
-        factv_ptrs[b:e] = _outputs[:(e-b)].detach().cpu().numpy()
+        factv_ptrs[lid][b:e] = _outputs[:(e-b)].detach().cpu().numpy()
         
         #do not update fstarts!!!
 
@@ -44,11 +44,13 @@ def mlp_hook(module, inputs, outputs):
         b,e = fstarts[lid], min(fstarts[lid]+_inputs.size(0),fmlp_ptrs[lid].shape[0])
         
         #copy contents to file
-        fmlp_ptrs[b:e] = (_inputs[:(e-b)].detach().cpu().numpy())
+        fmlp_ptrs[lid][b:e] = (_inputs[:(e-b)].detach().cpu().numpy())
         
         #update fstarts
         fstarts[lid] += _inputs.size(0)
-
+            
+        # print(fmlp_ptrs[b:e])
+        # exit()
     # print(f"saving input for mlp layer {lid}")
     # print(f"input {inputs[0].shape}")
     # print(f"")
@@ -176,6 +178,10 @@ def main(args):
         #begin data collection
         evaluate(m,tokenizer)
         
+        # #flush changes to disk
+        # for i in range(n_layers):
+        #     fmlp_ptrs[i].flush()
+        #     factv_ptrs[i].flush()
         #free all hooks
         for i in range(n_layers):
             mlp_handles[i].remove()
