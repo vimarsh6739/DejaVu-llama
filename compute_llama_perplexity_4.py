@@ -222,9 +222,9 @@ class Perplexity:
         return outputs.logits.detach()
 
 from transformers import LlamaForCausalLM, LlamaTokenizer
-from transformers import AutoTokenizer, AutoModelForCausalLM, GPTQConfig
-tokenizer = LlamaTokenizer.from_pretrained("/shared/vsathia2/model/")
-model = LlamaForCausalLM.from_pretrained("/shared/vsathia2/model/")
+
+tokenizer = LlamaTokenizer.from_pretrained("/shared/vsathia2/hf_models/vanilla_llama/")
+model = LlamaForCausalLM.from_pretrained("/shared/vsathia2/hf_models/vanilla_llama/")
 ppl_obj =  Perplexity(model, tokenizer)
 ppl_list = ppl_obj.calculate_perplexity()
 #print("ppl list : ", ppl_list)
