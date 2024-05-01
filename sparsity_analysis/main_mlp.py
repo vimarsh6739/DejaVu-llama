@@ -51,8 +51,8 @@ class BasicDataset(Dataset):
         else:
             x = torch.Tensor(self.X[-idx])
             y = torch.Tensor(self.Y[-idx])
-        print(x[:100])
-        print(y[:100])
+        # print(x[:100])
+        # print(y[:100])
         if y.sum()== 0:
             print("all zero y")
             exit()
@@ -125,7 +125,7 @@ def main():
     )
     args = parser.parse_args()
 
-    print(args)
+    # print(args)
     random.seed(0)
     torch.manual_seed(0)
     np.random.seed(0)
@@ -140,15 +140,16 @@ def main():
 
     query_layer = torch.nn.Sequential(
         torch.nn.Linear(CONFIG[args.model]['d'], args.D, bias=None),
-        torch.nn.Linear(args.D, CONFIG[args.model]['d']*4, bias=None),
+        torch.nn.Linear(args.D, CONFIG[args.model]['h'], bias=None),
     )
     
     print("Start Training")
     best_model, eval_result = train(
         query_layer,  train_loader, test_loader, args, device, verbal=True
     )
-
-    path = f"../checkpoint/opt-{args.model}-sparse-predictor/{args.dataset}_{args.k}_layer{args.L}_-{eval_result['Recall']:.4f}-{eval_result['Classifier Sparsity']:.0f}.pt"
+    
+    path = f"/shared/vsathia2/sp_mlp_predictor/{args.model}_layer{args.L}_{args.D}.pth"
+    # path = f"../checkpoint/opt-{args.model}-sparse-predictor/{args.dataset}_{args.k}_layer{args.L}_-{eval_result['Recall']:.4f}-{eval_result['Classifier Sparsity']:.0f}.pt"
     torch.save(best_model, path)
 
 
