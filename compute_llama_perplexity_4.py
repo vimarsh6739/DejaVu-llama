@@ -223,8 +223,8 @@ class Perplexity:
 
 from transformers import LlamaForCausalLM, LlamaTokenizer
 
-tokenizer = LlamaTokenizer.from_pretrained("/shared/vsathia2/hf_models/vanilla_llama/")
-model = LlamaForCausalLM.from_pretrained("/shared/vsathia2/hf_models/vanilla_llama/")
+tokenizer = LlamaTokenizer.from_pretrained("/shared/vsathia2/hf_models/llama-4bit-gptq/")
+model = LlamaForCausalLM.from_pretrained("/shared/vsathia2/hf_models/llama-4bit-gptq/", device_map = 'cuda')
 ppl_obj =  Perplexity(model, tokenizer)
 ppl_list = ppl_obj.calculate_perplexity()
 #print("ppl list : ", ppl_list)

@@ -118,6 +118,8 @@ def evaluate(model,tokenizer,device="cuda:0",dataset_path="wikitext",dataset_nam
         lid = 0
 
         with torch.no_grad():
+            model.cuda()
+            tokens_batch.cuda()
             outputs = model(tokens_batch)
         # print(f"output logit shape: {outputs.logits.shape}")
         
