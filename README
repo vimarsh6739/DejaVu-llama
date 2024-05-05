@@ -1,0 +1,24 @@
+Contextual Sparsity in Llama 2
+==
+
+Artifact for a project which explores contextual sparsity present in ReLU-fied Llama 2
+We also measure the effect of quantization on contextual sparsity. 
+
+Sparsity predictors are trained for every layer of Relu-Llama2(32 in total). 
+
+The code is heavily inspired by the work done in DejaVu(https://github.com/FMInference/DejaVu/). The sparsity predictor training parameters are adjusted to account for 
+the dimensions in Llama2's gated projection. Most of the training code relies on the usage of forward hooks to collect intermediate activations, and uses them to train sparsity
+predictors.
+
+Everything was trained on a single Nvidia A100 GPU.
+
+Some Observations:
+* The original Llama2 model exhibits no contextual sparsity. This is as expected, since the SiLU() function isn't sparse. 
+* ReLU-fied Llama2 does exhibit contextual sparsity. We found a minimal delta in accuracy on downstream tasks and perplexity on Wikitext.
+* We didn't explore accelerated inference for Llama2 based on runtime sparsity, although that'd be interesting.
+
+Useful Readings:
+* DejaVu : Contextual Sparsity for Efficient LLMs at Inference Time (https://openreview.net/pdf?id=wIPIhHd00i)
+* LLM in a flash: Efficient Large Language Model Inference with Limited Memory (https://arxiv.org/abs/2312.11514)
+
+
