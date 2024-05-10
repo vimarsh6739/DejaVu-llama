@@ -3,7 +3,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, GPTQConfig
 from transformers import BitsAndBytesConfig
 from peft import LoraConfig
 from datasets import load_dataset
-from trl import SFTTrainer
+#from trl import SFTTrainer
 
 dataset = load_dataset('wikitext', 'wikitext-2-raw-v1')
 
@@ -17,7 +17,7 @@ dataset = load_dataset('wikitext', 'wikitext-2-raw-v1')
 # )
 
 
-model_id = "SparseLLM/ReluLLaMA-7B"
+model_id = "/shared/vsathia2/hf_models/relu-llama/"
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 # if tokenizer.pad_token is None:
 #     tokenizer.add_special_tokens({'pad_token': '[PAD]'})
@@ -26,7 +26,7 @@ bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_quant_type="nf4",
     bnb_4bit_compute_dtype=torch.bfloat16,
-    bnb_4bit_use_double_quant=True,
+    bnb_4bit_use_double_quant=False,
     bnb_4bit_quant_storage=torch.bfloat16,
 )
 max_seq_length = 150
@@ -50,3 +50,5 @@ inputs.to('cuda')
 generate_ids = model.generate(inputs.input_ids, max_length=max_seq_length)
 response = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
 print("Response : ", response)
+model.save_pretrained("/shared/vsathia2/hf_models/relu-llama-4bit-bnb-new")
+tokenizer.save_pretrained("/shared/vsathia2/hf_models/relu-llama-4bit-bnb-new")

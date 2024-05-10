@@ -4,6 +4,7 @@ import numpy as np
 import torch
 from datasets import load_dataset
 from tqdm import tqdm
+from auto_gptq import AutoGPTQForCausalLM
 
 class Perplexity:
     """
@@ -223,9 +224,10 @@ class Perplexity:
 
 from transformers import LlamaForCausalLM, LlamaTokenizer
 
-tokenizer = LlamaTokenizer.from_pretrained("/shared/vsathia2/hf_models/llama-4bit-gptq/")
-model = LlamaForCausalLM.from_pretrained("/shared/vsathia2/hf_models/llama-4bit-gptq/", device_map = 'cuda')
+tokenizer = LlamaTokenizer.from_pretrained("/shared/vsathia2/hf_models/relu-llama-4bit-bnb-new/")
+model = LlamaForCausalLM.from_pretrained("/shared/vsathia2/hf_models/relu-llama-4bit-bnb-new/", device_map = 'cuda')
 ppl_obj =  Perplexity(model, tokenizer)
 ppl_list = ppl_obj.calculate_perplexity()
 #print("ppl list : ", ppl_list)
 print("mean ppl: ", mean(ppl_list))
+
